@@ -51,7 +51,7 @@ function play(e) {
     }
 }
 
-// /*
+//This is for playing with the AI
 function playAi(e) {
     let play = document.querySelector('#' + this.id);
     //Check if the position has already been played first
@@ -75,7 +75,6 @@ function playAi(e) {
                 counter = 0;
             }
             counter++;
-            // setTimeout(AiTurn,500);
         }
         //Check if game is over before AI plays 
         if (!isOver){
@@ -119,7 +118,7 @@ function clearBoard() {
     //Reset counter 
     counter = 0;
     //Set status back to empty
-    stats.innerHTML = '';
+    stats.innerHTML = 'Play First';
     diag1[0].classList.remove('strikediag');
     diag1[1].classList.remove('strikediag');
     diag1[2].classList.remove('strikediag');
