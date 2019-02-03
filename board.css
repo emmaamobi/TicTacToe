@@ -62,6 +62,24 @@ td {
     padding: 0.6em 1.2em;
     letter-spacing: 1px;
 }
+.start{
+    text-align: center;
+    border: none;
+    background: #B8BEDD;
+    color: mediumaquamarine;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+    border-radius: 10px;
+    padding: 0.6em 1.2em;
+    letter-spacing: 1px;
+
+}
+.start{
+    background: #144E75;
+}
+
 
 #reset {
     background: #144E75;
