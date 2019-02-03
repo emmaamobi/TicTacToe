@@ -3,6 +3,10 @@ const MAX_TURNS = 9;
 let counter = 0;
 //Array that contains the position of each square 
 let pos = [];
+//This are the different strikethroughs available with the css styling. 
+const sp = ["bottom", "right", "left top", "right top"];
+//This array is to determine the type of strikethrough needed. 
+const strikes = {123: sp[0], 456: sp[0], 789: sp[0], 147: sp[1], 258: sp[1], 369: sp[1], 357: sp[2], 159: sp[3] };
 //FLag to check if game has ended; 
 let isOver = false;
 let stats = document.querySelector('#status');
@@ -133,22 +137,44 @@ function checker(a, b, c) {
 
 }
 function checkHorizontal() {
-    return (checker(pos[1].innerHTML, pos[2].innerHTML, pos[3].innerHTML) ||
-        checker(pos[4].innerHTML, pos[5].innerHTML, pos[6].innerHTML) ||
-        checker(pos[7].innerHTML, pos[8].innerHTML, pos[9].innerHTML)
-    )
+    let result = "";
+    if(checker(pos[1].innerHTML, pos[2].innerHTML, pos[3].innerHTML))
+        result = "123";
+    if(checker(pos[4].innerHTML, pos[5].innerHTML, pos[6].innerHTML))
+        result = "456";    
+    if(checker(pos[7].innerHTML, pos[8].innerHTML, pos[9].innerHTML))
+        result = "789";
+    return result;
+    // return (checker(pos[1].innerHTML, pos[2].innerHTML, pos[3].innerHTML) ||
+    //     checker(pos[4].innerHTML, pos[5].innerHTML, pos[6].innerHTML) ||
+    //     checker(pos[7].innerHTML, pos[8].innerHTML, pos[9].innerHTML)
+    // )
 }
 
 function checkVertical() {
-    return (checker(pos[1].innerHTML, pos[4].innerHTML, pos[7].innerHTML) ||
-        checker(pos[2].innerHTML, pos[5].innerHTML, pos[8].innerHTML) ||
-        checker(pos[3].innerHTML, pos[6].innerHTML, pos[9].innerHTML)
-    )
+    let result = "";
+    if(checker(pos[1].innerHTML, pos[4].innerHTML, pos[7].innerHTML))
+        result = "147";
+    if(checker(pos[2].innerHTML, pos[5].innerHTML, pos[8].innerHTML))
+        result = "258";    
+    if(checker(pos[3].innerHTML, pos[6].innerHTML, pos[9].innerHTML))
+        result = "369";
+    return result;
+    // return (checker(pos[1].innerHTML, pos[4].innerHTML, pos[7].innerHTML) ||
+    //     checker(pos[2].innerHTML, pos[5].innerHTML, pos[8].innerHTML) ||
+    //     checker(pos[3].innerHTML, pos[6].innerHTML, pos[9].innerHTML)
+    // )
 }
 function checkDiagonal() {
-    return (checker(pos[1].innerHTML, pos[5].innerHTML, pos[9].innerHTML) ||
-        checker(pos[3].innerHTML, pos[5].innerHTML, pos[7].innerHTML)
-    )
+    let result = "";
+    if(checker(pos[1].innerHTML, pos[5].innerHTML, pos[9].innerHTML))
+        result = "159";
+    if(checker(pos[3].innerHTML, pos[5].innerHTML, pos[7].innerHTML))
+        result = "357";    
+    return result;
+    // return (checker(pos[1].innerHTML, pos[5].innerHTML, pos[9].innerHTML) ||
+    //     checker(pos[3].innerHTML, pos[5].innerHTML, pos[7].innerHTML)
+    // )
 }
 
 //Add event listener to each of the squares
