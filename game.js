@@ -26,7 +26,8 @@ function play(e) {
         if (counter % 2 === 0) {
             play.innerHTML = 'X';
             stats.innerHTML = "Player O's turn";
-            if (checkWin()) {
+            let win = checkWin();
+            if (win) {
                 stats.innerHTML = 'Congratulations!, Player X wins';
                 counter = 0;
             }
@@ -39,7 +40,8 @@ function play(e) {
         else if (!(counter % 2 === 0)) {
             play.innerHTML = 'O';
             stats.innerHTML = "Player X's turn";
-            if (checkWin()) {
+            let win = checkWin();
+            if (win) {
                 stats.innerHTML = 'Congratulations!, Player O wins';
                 counter = 0;
             }
@@ -63,15 +65,17 @@ function playAi(e) {
         if (counter % 2 === 0) {
             play.innerHTML = 'X';
             stats.innerHTML = "Player O's turn";
-            if (checkWin()) {
+            let win = checkWin();
+            if (win) {
                 stats.innerHTML = 'Congratulations!, Player X wins';
                 isOver = true;
                 counter = 0;
-                if (checker(diag1[0].innerHTML,diag1[1].innerHTML,diag1[2].innerHTML)){
-                    diag1[0].classList.add('strikediag');
-                    diag1[1].classList.add('strikediag');
-                    diag1[2].classList.add('strikediag');
-                }
+                strikeIt(win);
+                // if (checker(diag1[0].innerHTML,diag1[1].innerHTML,diag1[2].innerHTML)){
+                //     diag1[0].classList.add('strikediag');
+                //     diag1[1].classList.add('strikediag');
+                //     diag1[2].classList.add('strikediag');
+                // }
             }
             else if (counter === 8) {
                 stats.innerHTML = "It's a tie!";
@@ -94,10 +98,12 @@ function AiTurn() {
             if (pos[i].innerHTML == '') {
                 pos[i].innerHTML = 'O';
                 stats.innerHTML = "Player X's turn";
-                if (checkWin()) {
+                let win = checkWin();
+                if (win) {
                     stats.innerHTML = 'Congratulations!, Player O wins';
                     isOver = true;
                     counter = 0;
+                    
                 }
                 else if (counter === 8) {
                     stats.innerHTML = "It's a tie!";
@@ -175,6 +181,18 @@ function checkDiagonal() {
     // return (checker(pos[1].innerHTML, pos[5].innerHTML, pos[9].innerHTML) ||
     //     checker(pos[3].innerHTML, pos[5].innerHTML, pos[7].innerHTML)
     // )
+}
+//This helps to set the strike based on the string given
+function getStrike(str){
+    return "linear-gradient(to "+str+", transparent 47.75%, currentColor 49.5%, currentColor 50.5%, transparent 52.25%)"
+}
+function strikeIt(cellsStr){
+    let strike = strikes[cellsStr];
+    cells = cellsStr.split("");
+    for(let i =0; i<3; i++){
+        $("#s" + cells[i]).css("background", getStrike(strike));
+        document.querySelector("#s" + cells[i]).style.background = getStrike(strike);
+    }
 }
 
 //Add event listener to each of the squares
