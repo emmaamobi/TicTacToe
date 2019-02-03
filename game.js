@@ -90,11 +90,6 @@ function playWithAi(e) {
                 isOver = true;
                 counter = 0;
                 strikeIt(win);
-                // if (checker(diag1[0].innerHTML,diag1[1].innerHTML,diag1[2].innerHTML)){
-                //     diag1[0].classList.add('strikediag');
-                //     diag1[1].classList.add('strikediag');
-                //     diag1[2].classList.add('strikediag');
-                // }
             }
             else if (counter === 8) {
                 stats.innerHTML = "It's a tie!";
@@ -177,10 +172,6 @@ function checkHorizontal() {
     if (checker(pos[7].innerHTML, pos[8].innerHTML, pos[9].innerHTML))
         result = "789";
     return result;
-    // return (checker(pos[1].innerHTML, pos[2].innerHTML, pos[3].innerHTML) ||
-    //     checker(pos[4].innerHTML, pos[5].innerHTML, pos[6].innerHTML) ||
-    //     checker(pos[7].innerHTML, pos[8].innerHTML, pos[9].innerHTML)
-    // )
 }
 
 function checkVertical() {
@@ -192,8 +183,7 @@ function checkVertical() {
     if (checker(pos[3].innerHTML, pos[6].innerHTML, pos[9].innerHTML))
         result = "369";
     return result;
-    // return (checker(pos[1].innerHTML, pos[4].innerHTML, pos[7].innerHTML) ||
-    //     checker(pos[2].innerHTML, pos[5].innerHTML, pos[8].innerHTML) ||
+    // return (checker(pos[1].innerHTML, pos[4].innerHTML, pos[7].innerHTML) || //     checker(pos[2].innerHTML, pos[5].innerHTML, pos[8].innerHTML) ||
     //     checker(pos[3].innerHTML, pos[6].innerHTML, pos[9].innerHTML)
     // )
 }
@@ -204,9 +194,6 @@ function checkDiagonal() {
     if (checker(pos[3].innerHTML, pos[5].innerHTML, pos[7].innerHTML))
         result = "357";
     return result;
-    // return (checker(pos[1].innerHTML, pos[5].innerHTML, pos[9].innerHTML) ||
-    //     checker(pos[3].innerHTML, pos[5].innerHTML, pos[7].innerHTML)
-    // )
 }
 //This helps to set the strike based on the string given, 
 function getStrike(str) {
@@ -221,17 +208,14 @@ function strikeIt(cellsPos) {
     }
 }
 
-//Add event listener to each of the squares
-// for (let i = 0; i < squares.length; i++) {
-//     squares[i].addEventListener('click', playWithAi);
-
-// }
+//Add event listeners to the squares 
 function addEvent(evnt) {
     for (let i = 0; i < squares.length; i++) {
         squares[i].addEventListener('click', evnt);
 
     }
 }
+//Removes the event listeners on the squares 
 function removeEvent(evnt) {
     for (let i = 0; i < squares.length; i++) {
         squares[i].removeEventListener('click', evnt);
