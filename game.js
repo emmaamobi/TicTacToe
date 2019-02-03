@@ -9,8 +9,10 @@ const sp = ["bottom", "right", "left top", "right top"];
 const strikesMap = { 123: sp[0], 456: sp[0], 789: sp[0], 147: sp[1], 258: sp[1], 369: sp[1], 357: sp[2], 159: sp[3] };
 //FLag to check if game has ended; 
 let isOver = false;
+let btns = document.querySelectorAll(".start");
 let stats = document.querySelector('#status');
 let squares = document.getElementsByClassName('square');
+let mode;
 for (let i = 1; i <= MAX_TURNS; i++) {
     pos[i] = document.querySelector('#s' + i)
 }
@@ -19,16 +21,17 @@ diag1[0] = pos[3];
 diag1[1] = pos[5];
 diag1[2] = pos[7];
 
-function vsAi(){
+function vsAi() {
     addEvent(playWithAi);
-    let btns = document.querySelectorAll(".start");
+    mode = playWithAi;
     btns[0].style.display = 'none';
     btns[1].style.display = 'none';
 
 
 }
-function vsPlayer(){
+function vsPlayer() {
     addEvent(playWithPlayer);
+    mode = playWithPlayer;
     let btns = document.querySelectorAll(".start");
     btns[0].style.display = 'none';
     btns[1].style.display = 'none';
@@ -150,6 +153,9 @@ function clearBoard() {
     diag1[0].classList.remove('strikediag');
     diag1[1].classList.remove('strikediag');
     diag1[2].classList.remove('strikediag');
+    removeEvent(mode);
+    btns[0].style.display = 'block';
+    btns[1].style.display = 'block';
     //Reset isOver back to false
     isOver = false;
 }
@@ -220,9 +226,15 @@ function strikeIt(cellsPos) {
 //     squares[i].addEventListener('click', playWithAi);
 
 // }
-function addEvent(evnt){
+function addEvent(evnt) {
     for (let i = 0; i < squares.length; i++) {
         squares[i].addEventListener('click', evnt);
-    
+
+    }
+}
+function removeEvent(evnt) {
+    for (let i = 0; i < squares.length; i++) {
+        squares[i].removeEventListener('click', evnt);
+
     }
 }
