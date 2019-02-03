@@ -19,7 +19,21 @@ diag1[0] = pos[3];
 diag1[1] = pos[5];
 diag1[2] = pos[7];
 
-function play(e) {
+function vsAi(){
+    addEvent(playWithAi);
+    let btns = document.querySelectorAll(".start");
+    btns[0].style.display = 'none';
+    btns[1].style.display = 'none';
+
+
+}
+function vsPlayer(){
+    addEvent(playWithPlayer);
+    let btns = document.querySelectorAll(".start");
+    btns[0].style.display = 'none';
+    btns[1].style.display = 'none';
+}
+function playWithPlayer(e) {
     let play = document.querySelector('#' + this.id);
     //Check if the position has already been played first
     if (play.innerHTML === '' && counter !== MAX_TURNS && !checkWin()) {
@@ -202,7 +216,13 @@ function strikeIt(cellsPos) {
 }
 
 //Add event listener to each of the squares
-for (let i = 0; i < squares.length; i++) {
-    squares[i].addEventListener('click', playWithAi);
+// for (let i = 0; i < squares.length; i++) {
+//     squares[i].addEventListener('click', playWithAi);
 
+// }
+function addEvent(evnt){
+    for (let i = 0; i < squares.length; i++) {
+        squares[i].addEventListener('click', evnt);
+    
+    }
 }
