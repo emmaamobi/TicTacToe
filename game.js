@@ -3,6 +3,10 @@ const MAX_TURNS = 9;
 let counter = 0;
 //Array that contains the position of each square 
 let pos = [];
+//This are the different strikethroughs available with the css styling. 
+const sp = ["bottom", "right", "left top", "right top"];
+//Map each possible win cell positions to a strikethrough type, 
+const strikesMap = { 123: sp[0], 456: sp[0], 789: sp[0], 147: sp[1], 258: sp[1], 369: sp[1], 357: sp[2], 159: sp[3] };
 //FLag to check if game has ended; 
 let isOver = false;
 let stats = document.querySelector('#status');
@@ -15,16 +19,32 @@ diag1[0] = pos[3];
 diag1[1] = pos[5];
 diag1[2] = pos[7];
 
-function play(e) {
+function vsAi(){
+    addEvent(playWithAi);
+    let btns = document.querySelectorAll(".start");
+    btns[0].style.display = 'none';
+    btns[1].style.display = 'none';
+
+
+}
+function vsPlayer(){
+    addEvent(playWithPlayer);
+    let btns = document.querySelectorAll(".start");
+    btns[0].style.display = 'none';
+    btns[1].style.display = 'none';
+}
+function playWithPlayer(e) {
     let play = document.querySelector('#' + this.id);
     //Check if the position has already been played first
     if (play.innerHTML === '' && counter !== MAX_TURNS && !checkWin()) {
         if (counter % 2 === 0) {
             play.innerHTML = 'X';
             stats.innerHTML = "Player O's turn";
-            if (checkWin()) {
+            let win = checkWin();
+            if (win) {
                 stats.innerHTML = 'Congratulations!, Player X wins';
                 counter = 0;
+                strikeIt(win);
             }
             else if (counter === 8) {
                 stats.innerHTML = "It's a tie!";
@@ -35,9 +55,11 @@ function play(e) {
         else if (!(counter % 2 === 0)) {
             play.innerHTML = 'O';
             stats.innerHTML = "Player X's turn";
-            if (checkWin()) {
+            let win = checkWin();
+            if (win) {
                 stats.innerHTML = 'Congratulations!, Player O wins';
                 counter = 0;
+                strikeIt(win);
             }
             else if (counter === 8) {
                 stats.innerHTML = "It's a tie!";
@@ -52,22 +74,24 @@ function play(e) {
 }
 
 //This is for playing with the AI
-function playAi(e) {
+function playWithAi(e) {
     let play = document.querySelector('#' + this.id);
     //Check if the position has already been played first
     if (play.innerHTML === '' && counter !== MAX_TURNS && !checkWin()) {
         if (counter % 2 === 0) {
             play.innerHTML = 'X';
             stats.innerHTML = "Player O's turn";
-            if (checkWin()) {
+            let win = checkWin();
+            if (win) {
                 stats.innerHTML = 'Congratulations!, Player X wins';
                 isOver = true;
                 counter = 0;
-                if (checker(diag1[0].innerHTML,diag1[1].innerHTML,diag1[2].innerHTML)){
-                    diag1[0].classList.add('strikediag');
-                    diag1[1].classList.add('strikediag');
-                    diag1[2].classList.add('strikediag');
-                }
+                strikeIt(win);
+                // if (checker(diag1[0].innerHTML,diag1[1].innerHTML,diag1[2].innerHTML)){
+                //     diag1[0].classList.add('strikediag');
+                //     diag1[1].classList.add('strikediag');
+                //     diag1[2].classList.add('strikediag');
+                // }
             }
             else if (counter === 8) {
                 stats.innerHTML = "It's a tie!";
@@ -77,8 +101,8 @@ function playAi(e) {
             counter++;
         }
         //Check if game is over before AI plays 
-        if (!isOver){
-        setTimeout(AiTurn,500);
+        if (!isOver) {
+            setTimeout(AiTurn, 500);
 
         }
     }
@@ -90,10 +114,12 @@ function AiTurn() {
             if (pos[i].innerHTML == '') {
                 pos[i].innerHTML = 'O';
                 stats.innerHTML = "Player X's turn";
-                if (checkWin()) {
+                let win = checkWin();
+                if (win) {
                     stats.innerHTML = 'Congratulations!, Player O wins';
                     isOver = true;
                     counter = 0;
+
                 }
                 else if (counter === 8) {
                     stats.innerHTML = "It's a tie!";
@@ -114,6 +140,8 @@ function AiTurn() {
 function clearBoard() {
     for (let i = 0; i < squares.length; i++) {
         squares[i].innerHTML = '';
+        //Remove the strikethroughs
+        squares[i].style.background = "";
     }
     //Reset counter 
     counter = 0;
@@ -132,27 +160,69 @@ function checker(a, b, c) {
     return (a !== '') && (a === b) && (b === c);
 
 }
+//If result is empty, it will evaluate as false, if not empty it will return the index of the winning positions to use later
+//This help retrieve index of positions
 function checkHorizontal() {
-    return (checker(pos[1].innerHTML, pos[2].innerHTML, pos[3].innerHTML) ||
-        checker(pos[4].innerHTML, pos[5].innerHTML, pos[6].innerHTML) ||
-        checker(pos[7].innerHTML, pos[8].innerHTML, pos[9].innerHTML)
-    )
+    let result = "";
+    if (checker(pos[1].innerHTML, pos[2].innerHTML, pos[3].innerHTML))
+        result = "123";
+    if (checker(pos[4].innerHTML, pos[5].innerHTML, pos[6].innerHTML))
+        result = "456";
+    if (checker(pos[7].innerHTML, pos[8].innerHTML, pos[9].innerHTML))
+        result = "789";
+    return result;
+    // return (checker(pos[1].innerHTML, pos[2].innerHTML, pos[3].innerHTML) ||
+    //     checker(pos[4].innerHTML, pos[5].innerHTML, pos[6].innerHTML) ||
+    //     checker(pos[7].innerHTML, pos[8].innerHTML, pos[9].innerHTML)
+    // )
 }
 
 function checkVertical() {
-    return (checker(pos[1].innerHTML, pos[4].innerHTML, pos[7].innerHTML) ||
-        checker(pos[2].innerHTML, pos[5].innerHTML, pos[8].innerHTML) ||
-        checker(pos[3].innerHTML, pos[6].innerHTML, pos[9].innerHTML)
-    )
+    let result = "";
+    if (checker(pos[1].innerHTML, pos[4].innerHTML, pos[7].innerHTML))
+        result = "147";
+    if (checker(pos[2].innerHTML, pos[5].innerHTML, pos[8].innerHTML))
+        result = "258";
+    if (checker(pos[3].innerHTML, pos[6].innerHTML, pos[9].innerHTML))
+        result = "369";
+    return result;
+    // return (checker(pos[1].innerHTML, pos[4].innerHTML, pos[7].innerHTML) ||
+    //     checker(pos[2].innerHTML, pos[5].innerHTML, pos[8].innerHTML) ||
+    //     checker(pos[3].innerHTML, pos[6].innerHTML, pos[9].innerHTML)
+    // )
 }
 function checkDiagonal() {
-    return (checker(pos[1].innerHTML, pos[5].innerHTML, pos[9].innerHTML) ||
-        checker(pos[3].innerHTML, pos[5].innerHTML, pos[7].innerHTML)
-    )
+    let result = "";
+    if (checker(pos[1].innerHTML, pos[5].innerHTML, pos[9].innerHTML))
+        result = "159";
+    if (checker(pos[3].innerHTML, pos[5].innerHTML, pos[7].innerHTML))
+        result = "357";
+    return result;
+    // return (checker(pos[1].innerHTML, pos[5].innerHTML, pos[9].innerHTML) ||
+    //     checker(pos[3].innerHTML, pos[5].innerHTML, pos[7].innerHTML)
+    // )
+}
+//This helps to set the strike based on the string given, 
+function getStrike(str) {
+    return "linear-gradient(to " + str + ", transparent 47.75%, currentColor 49.5%, currentColor 50.5%, transparent 52.25%)"
+}
+//This function strikes the board based on the positions, i.e 123, would strike horizontally
+function strikeIt(cellsPos) {
+    //Get the strike value and set it based on the Map 
+    let strike = strikesMap[cellsPos];
+    for (let i = 0; i < 3; i++) {
+        document.querySelector("#s" + cellsPos[i]).style.background = getStrike(strike);
+    }
 }
 
 //Add event listener to each of the squares
-for (let i = 0; i < squares.length; i++) {
-    squares[i].addEventListener('click', playAi);
+// for (let i = 0; i < squares.length; i++) {
+//     squares[i].addEventListener('click', playWithAi);
 
+// }
+function addEvent(evnt){
+    for (let i = 0; i < squares.length; i++) {
+        squares[i].addEventListener('click', evnt);
+    
+    }
 }
