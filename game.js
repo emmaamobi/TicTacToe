@@ -3,6 +3,7 @@ const MAX_TURNS = 9;
 let counter = 0;
 //Array that contains the position of each square 
 let pos = [];
+let empty_space = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 //This are the different strikethroughs available with the css styling. 
 const sp = ["bottom", "right", "left top", "right top"];
 //Map each possible win cell positions to a strikethrough type, 
@@ -83,6 +84,10 @@ function playWithAi(e) {
     if (play.innerHTML === '' && counter !== MAX_TURNS && !checkWin()) {
         if (counter % 2 === 0) {
             play.innerHTML = 'X';
+            console.log(empty_space);
+            console.log(this.id);
+            empty_space.splice(this.id - 1, 1);
+            console.log(empty_space);
             stats.innerHTML = "Player O's turn";
             let win = checkWin();
             if (win) {
@@ -100,12 +105,40 @@ function playWithAi(e) {
         }
         //Check if game is over before AI plays 
         if (!isOver) {
-            setTimeout(AiTurn, 500);
+            // setTimeout(AiTurn, 500);
+            setTimeout(AiTurnRand,500);
 
         }
     }
 }
 //This function will make the AI play. The AI always goes second. 
+function AiTurnRand() {
+    var randPosition = empty_space[Math.floor(Math.random() * empty_space.length)];
+    if (counter % 2 !== 0) {
+        pos[randPosition].innerHTML = 'O';
+        console.log(randPosition);
+        empty_space.splice(randPosition-1,1);
+        console.log(empty_space);
+        stats.innerHTML = "Player X's turn";
+        let win = checkWin();
+        if (win) {
+            stats.innerHTML = 'Congratulations!, Player O wins';
+            isOver = true;
+            counter = 0;
+
+        }
+        else if (counter === 8) {
+            stats.innerHTML = "It's a tie!";
+            isOver = true;
+            counter = 0;
+        }
+        counter++;
+
+
+    }
+
+    return true;
+}
 function AiTurn() {
     if (counter % 2 !== 0) {
         for (let i = 1; i < MAX_TURNS; i++) {
