@@ -84,10 +84,11 @@ function playWithAi(e) {
     if (play.innerHTML === '' && counter !== MAX_TURNS && !checkWin()) {
         if (counter % 2 === 0) {
             play.innerHTML = 'X';
-            console.log(empty_space);
-            console.log(this.id);
-            empty_space.splice(this.id - 1, 1);
-            console.log(empty_space);
+            console.log("Empty space after player plays: " + empty_space);
+            var ind = parseInt(this.id[1],10);
+            console.log("Id of square: " + this.id[1])
+            empty_space.splice(empty_space.indexOf(ind), 1);
+            console.log("Empty space after removed played position: " + empty_space);
             stats.innerHTML = "Player O's turn";
             let win = checkWin();
             if (win) {
@@ -114,11 +115,12 @@ function playWithAi(e) {
 //This function will make the AI play. The AI always goes second. 
 function AiTurnRand() {
     var randPosition = empty_space[Math.floor(Math.random() * empty_space.length)];
+    console.log("Position for random position" + randPosition);
     if (counter % 2 !== 0) {
         pos[randPosition].innerHTML = 'O';
-        console.log(randPosition);
-        empty_space.splice(randPosition-1,1);
-        console.log(empty_space);
+        console.log("Position of Random position to play for ai: " + randPosition);
+        console.log("Element removed from empty space: " + empty_space.splice(empty_space.indexOf(randPosition),1));
+        console.log("Empty space after random element removed: " + empty_space);
         stats.innerHTML = "Player X's turn";
         let win = checkWin();
         if (win) {
@@ -186,6 +188,7 @@ function clearBoard() {
     btns[1].style.display = 'block';
     //Reset isOver back to false
     isOver = false;
+    empty_space = [1,2,3,4,5,6,7,8,9];
 }
 function checkWin() {
     return (checkHorizontal() || checkVertical() || checkDiagonal());
